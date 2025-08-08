@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Origami of Life</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="grid-background">
+        <div class="grid-overlay"></div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="title" id="title">
+                <span class="title-text">Origami of Life</span>
+            </h1>
+            <p class="subtitle">fold your expectations</p>
+        </header>
+        
+        <main class="content">
+            <div class="origami-section">
+                <div class="origami-container">
+                    <div class="origami-paper" id="origamiPaper">
+                        <div class="paper-face front"></div>
+                        <div class="paper-face back"></div>
+                        <div class="paper-face left"></div>
+                        <div class="paper-face right"></div>
+                        <div class="paper-face top"></div>
+                        <div class="paper-face bottom"></div>
+                    </div>
+                </div>
+                
+                <div class="fold-button-container">
+                    <button class="fold-btn" id="foldBtn">
+                        <span class="fold-text">Fold</span>
+                        <span class="fold-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

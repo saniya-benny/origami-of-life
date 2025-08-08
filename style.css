@@ -1,0 +1,586 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Times New Roman', serif;
+    background: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Grid background */
+.grid-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -2;
+}
+
+.grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
+    z-index: -1;
+}
+
+/* Container */
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1;
+}
+
+/* Header styles */
+.header {
+    text-align: center;
+    margin-bottom: 80px;
+    z-index: 10;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Moving gradient title */
+.title {
+    font-family: 'Times New Roman', serif;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    font-weight: 900;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+}
+
+.title-text {
+    background: linear-gradient(
+        45deg,
+        #ff6b6b,
+        #4ecdc4,
+        #45b7d1,
+        #96ceb4,
+        #feca57,
+        #ff9ff3,
+        #54a0ff,
+        #5f27cd,
+        #00d2d3,
+        #ff9f43
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientMove 8s ease-in-out infinite;
+    display: inline-block;
+    position: relative;
+}
+
+.title-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        #ff6b6b,
+        #4ecdc4,
+        #45b7d1,
+        #96ceb4,
+        #feca57,
+        #ff9ff3,
+        #54a0ff,
+        #5f27cd,
+        #00d2d3,
+        #ff9f43
+    );
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientMove 8s ease-in-out infinite reverse;
+    opacity: 0.3;
+    filter: blur(2px);
+    z-index: -1;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    25% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 0% 100%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.subtitle {
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    color: #ffffff;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: lowercase;
+    opacity: 0.8;
+    animation: subtitleGlow 3s ease-in-out infinite alternate;
+    text-align: center;
+    width: 100%;
+    font-family: 'Times New Roman', serif;
+}
+
+@keyframes subtitleGlow {
+    0% {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+    100% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* Content */
+.content {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+/* Origami section */
+.origami-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.origami-container {
+    perspective: 1000px;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+.origami-paper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: autoRotate 12s linear infinite;
+    cursor: pointer;
+}
+
+@keyframes autoRotate {
+    0% {
+        transform: rotateY(0deg) rotateX(0deg);
+    }
+    16.66% {
+        transform: rotateY(90deg) rotateX(0deg);
+    }
+    33.33% {
+        transform: rotateY(180deg) rotateX(0deg);
+    }
+    50% {
+        transform: rotateY(270deg) rotateX(0deg);
+    }
+    66.66% {
+        transform: rotateY(0deg) rotateX(90deg);
+    }
+    83.33% {
+        transform: rotateY(0deg) rotateX(180deg);
+    }
+    100% {
+        transform: rotateY(0deg) rotateX(0deg);
+    }
+}
+
+.origami-paper:hover {
+    animation-play-state: paused;
+    transform: scale(1.05);
+}
+
+.paper-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(135deg, #ffffff, #f0f0f0),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 8px,
+            rgba(0, 0, 0, 0.1) 8px,
+            rgba(0, 0, 0, 0.1) 9px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 8px,
+            rgba(0, 0, 0, 0.1) 8px,
+            rgba(0, 0, 0, 0.1) 9px
+        );
+    border: 3px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #000000;
+    font-weight: bold;
+    backface-visibility: hidden;
+    box-shadow: 
+        0 4px 20px rgba(255, 255, 255, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.1),
+        0 0 0 1px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.paper-face::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    bottom: 10%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+    border-radius: 4px;
+}
+
+.front { transform: rotateY(0deg) translateZ(100px); }
+.back { transform: rotateY(180deg) translateZ(100px); }
+.left { transform: rotateY(-90deg) translateZ(100px); }
+.right { transform: rotateY(90deg) translateZ(100px); }
+.top { transform: rotateX(90deg) translateZ(100px); }
+.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+/* Quote container */
+.quote-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
+}
+
+.quote-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+    font-style: italic;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.quote::before {
+    content: '"';
+    font-size: 4rem;
+    color: #ffffff;
+    position: absolute;
+    top: -15px;
+    left: -25px;
+    font-family: serif;
+    opacity: 0.3;
+}
+
+.quote-author {
+    font-size: 1rem;
+    color: #ffffff;
+    font-style: normal;
+    font-weight: 500;
+    opacity: 0.7;
+    letter-spacing: 1px;
+}
+
+/* Quote animations */
+.quote-fade-in {
+    animation: quoteFadeIn 0.8s ease-out;
+}
+
+@keyframes quoteFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Particle effects */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* Fold button container */
+.fold-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.fold-btn {
+    background: transparent;
+    color: #40e0d0;
+    border: 2px solid #40e0d0;
+    padding: 20px 40px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Times New Roman', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 0 8px #40e0d0,
+        0 0 15px #40e0d0,
+        0 0 25px #40e0d0,
+        inset 0 0 15px rgba(64, 224, 208, 0.1);
+    animation: neonPulse 2s ease-in-out infinite;
+    text-shadow: 0 0 8px #40e0d0;
+}
+
+.fold-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(64, 224, 208, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.fold-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 0 15px #40e0d0,
+        0 0 30px #40e0d0,
+        0 0 45px #40e0d0,
+        inset 0 0 15px rgba(64, 224, 208, 0.2);
+    text-shadow: 0 0 15px #40e0d0;
+    border-color: #40e0d0;
+    color: #ffffff;
+}
+
+.fold-btn:hover::before {
+    left: 100%;
+}
+
+.fold-btn:active {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 
+        0 0 12px #40e0d0,
+        0 0 25px #40e0d0,
+        0 0 35px #40e0d0;
+}
+
+.fold-text {
+    margin-right: 10px;
+    position: relative;
+    z-index: 1;
+    font-family: 'Times New Roman', serif;
+    font-size: 1.4rem;
+}
+
+.fold-icon {
+    font-size: 1.6rem;
+    position: relative;
+    z-index: 1;
+    animation: iconBounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 4px #40e0d0);
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 8px #40e0d0,
+            0 0 15px #40e0d0,
+            0 0 25px #40e0d0,
+            inset 0 0 15px rgba(64, 224, 208, 0.1);
+        text-shadow: 0 0 8px #40e0d0;
+    }
+    50% {
+        box-shadow: 
+            0 0 12px #40e0d0,
+            0 0 25px #40e0d0,
+            0 0 35px #40e0d0,
+            inset 0 0 15px rgba(64, 224, 208, 0.15);
+        text-shadow: 0 0 12px #40e0d0;
+    }
+}
+
+@keyframes iconBounce {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px #40e0d0);
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 6px #40e0d0);
+    }
+}
+
+@keyframes gradientBorder {
+    0% {
+        background-position: 0% 50%;
+    }
+    25% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 0% 100%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .origami-container {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .paper-face {
+        font-size: 18px;
+    }
+    
+    .front, .back, .left, .right, .top, .bottom {
+        transform: translateZ(75px);
+    }
+    
+    .front { transform: rotateY(0deg) translateZ(75px); }
+    .back { transform: rotateY(180deg) translateZ(75px); }
+    .left { transform: rotateY(-90deg) translateZ(75px); }
+    .right { transform: rotateY(90deg) translateZ(75px); }
+    .top { transform: rotateX(90deg) translateZ(75px); }
+    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+    
+    .fold-btn {
+        padding: 15px 30px;
+        font-size: 1rem;
+    }
+    
+    .grid-background {
+        background-size: 30px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .origami-container {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .paper-face {
+        font-size: 14px;
+    }
+    
+    .front, .back, .left, .right, .top, .bottom {
+        transform: translateZ(60px);
+    }
+    
+    .front { transform: rotateY(0deg) translateZ(60px); }
+    .back { transform: rotateY(180deg) translateZ(60px); }
+    .left { transform: rotateY(-90deg) translateZ(60px); }
+    .right { transform: rotateY(90deg) translateZ(60px); }
+    .top { transform: rotateX(90deg) translateZ(60px); }
+    .bottom { transform: rotateX(-90deg) translateZ(60px); }
+    
+    .header {
+        margin-bottom: 60px;
+    }
+    
+    .origami-section {
+        gap: 40px;
+    }
+    
+    .grid-background {
+        background-size: 25px 25px;
+    }
+    
+    .fold-btn {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+.origami-paper:focus {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+}
+
+/* Print styles */
+@media print {
+    .container {
+        background: white;
+        color: black;
+    }
+    
+    .grid-background {
+        display: none;
+    }
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Website</title>
+    <meta name="description" content="A clean, fast, and responsive starter website." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="container nav">
+        <a class="brand" href="#">MyWebsite</a>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="primary-navigation" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <ul id="primary-navigation" class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div class="hero-content">
+          <h1>Launch a beautiful website, fast</h1>
+          <p class="subtitle">A minimal starter with great defaults: responsive layout, accessible markup, and modern styling. Customize it to make it yours.</p>
+          <div class="actions">
+            <a class="button button-primary" href="#contact">Get Started</a>
+            <a class="button button-ghost" href="#features">Learn More</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section container">
+        <h2 class="section-title">Features</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Responsive by Default</h3>
+            <p>Looks great on mobile, tablet, and desktop without extra work.</p>
+          </article>
+          <article class="card">
+            <h3>Accessible Markup</h3>
+            <p>Semantic HTML and ARIA attributes help everyone use your site.</p>
+          </article>
+          <article class="card">
+            <h3>Clean Typography</h3>
+            <p>Readable defaults with a system font stack for performance.</p>
+          </article>
+          <article class="card">
+            <h3>Dark Mode Ready</h3>
+            <p>Automatic theme that adapts to the user’s system preferences.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="faq" class="section container">
+        <h2 class="section-title">FAQ</h2>
+        <details class="faq-item">
+          <summary>Can I customize the styles?</summary>
+          <p>Yes. Edit <code>styles.css</code> to change colors, spacing, and components.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I add pages?</summary>
+          <p>Create new HTML files and link to them in the navigation.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I deploy this?</summary>
+          <p>You can host static sites on many platforms. See the README for quick deploy tips.</p>
+        </details>
+      </section>
+
+      <section id="contact" class="section container cta">
+        <h2 class="section-title">Stay in the loop</h2>
+        <p>Drop your email and we’ll notify you when we launch new features.</p>
+        <form id="contact-form" class="form">
+          <label class="sr-only" for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+          <button type="submit" class="button button-primary">Notify Me</button>
+        </form>
+        <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> MyWebsite. All rights reserved.</p>
+        <ul class="footer-links">
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

@@ -6,6 +6,7 @@ const title = document.getElementById('title');
 // State variables
 let isRotating = true;
 let currentRotation = 0;
+let isShaking = false;
 
 // Initialize the application
 function init() {
@@ -23,6 +24,80 @@ function init() {
     
     // Add title animation
     addTitleAnimation();
+
+    // Add click/tap to shake and unfold
+    setupShakeUnfold();
+}
+
+function setupShakeUnfold() {
+    const starfield = document.querySelector('.starfield');
+
+    function triggerShakeSequence() {
+        if (isShaking) return;
+        isShaking = true;
+
+        // Add shake class + glow
+        origamiPaper.classList.add('shake');
+        origamiPaper.classList.add('glow');
+
+        // After shake, unfold cube and reveal starfield
+        setTimeout(() => {
+            origamiPaper.classList.remove('shake');
+            origamiPaper.classList.add('unfold');
+            if (starfield) starfield.classList.add('visible');
+        }, 520);
+
+        // After unfold completes, float in space a bit
+        setTimeout(() => {
+            // subtle floating effect via CSS transform
+            origamiPaper.style.transition = 'transform 2000ms ease';
+            origamiPaper.style.transform = 'translateZ(-40px) scale(0.96)';
+        }, 1200);
+
+        // Reset after a short showcase
+        setTimeout(() => {
+            // reset classes and transforms so user can trigger again
+            origamiPaper.classList.remove('glow');
+            origamiPaper.classList.remove('unfold');
+            origamiPaper.style.transform = '';
+            if (starfield) starfield.classList.remove('visible');
+            isShaking = false;
+        }, 3600);
+    }
+
+    // Click / tap
+    origamiPaper.addEventListener('click', (e) => {
+        e.preventDefault();
+        triggerShakeSequence();
+    });
+
+    // Keyboard (space/enter)
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'Enter') {
+            e.preventDefault();
+            triggerShakeSequence();
+        }
+    });
+
+    // Device motion shake detection
+    if (window.DeviceMotionEvent) {
+        let lastUpdate = 0;
+        let lastX = 0, lastY = 0, lastZ = 0;
+        const shakeThreshold = 15;
+        window.addEventListener('devicemotion', (e) => {
+            const current = e.accelerationIncludingGravity;
+            const currentTime = Date.now();
+            if ((currentTime - lastUpdate) > 100) {
+                const diffTime = currentTime - lastUpdate;
+                lastUpdate = currentTime;
+                const speed = Math.abs(current.x + current.y + current.z - lastX - lastY - lastZ) / diffTime * 10000;
+                if (speed > shakeThreshold) {
+                    triggerShakeSequence();
+                }
+                lastX = current.x; lastY = current.y; lastZ = current.z;
+            }
+        });
+    }
 }
 
 // Handle fold button click
@@ -150,9 +225,9 @@ function handleResize() {
     
     // Adjust origami paper size based on screen size
     if (isSmallMobile) {
-        origamiPaper.style.transform = 'scale(0.8)';
-    } else if (isMobile) {
         origamiPaper.style.transform = 'scale(0.9)';
+    } else if (isMobile) {
+        origamiPaper.style.transform = 'scale(1)';
     } else {
         origamiPaper.style.transform = 'scale(1)';
     }
@@ -163,8 +238,8 @@ function addAccessibilityFeatures() {
     // Add ARIA labels
     origamiPaper.setAttribute('role', 'button');
     origamiPaper.setAttribute('tabindex', '0');
-    origamiPaper.setAttribute('aria-label', 'Automatically rotating origami cube. Hover to pause rotation.');
-    foldBtn.setAttribute('aria-label', 'Toggle cube rotation. Click to pause or resume.');
+    origamiPaper.setAttribute('aria-label', 'Black cube with neon cracks. Click or press space/enter to shake and unfold into starfield.');
+    foldBtn.setAttribute('aria-label', 'Go to next page');
     
     // Add focus management
     origamiPaper.addEventListener('focus', () => {

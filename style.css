@@ -181,10 +181,34 @@ body {
 }
 
 .origami-container {
-    perspective: 1000px;
-    width: 200px;
-    height: 200px;
+    perspective: 1200px;
+    width: 360px;
+    height: 360px;
     margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.starfield {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,1) 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="black"/><g fill="white" opacity="0.9"><circle cx="10" cy="10" r="1"/><circle cx="60" cy="30" r="1"/><circle cx="120" cy="80" r="1"/><circle cx="180" cy="20" r="1"/><circle cx="30" cy="150" r="1"/><circle cx="170" cy="160" r="1"/><circle cx="80" cy="140" r="1"/></g></svg>');
+    background-size: cover, 200px 200px;
+    background-repeat: no-repeat, repeat;
+    filter: blur(0.2px) brightness(0.9);
+    opacity: 0;
+    transform: scale(1.1) translateZ(-1px);
+    transition: opacity 800ms ease, transform 1000ms ease;
+    border-radius: 12px;
+}
+
+.starfield.visible {
+    opacity: 1;
+    transform: scale(1) translateZ(-1px);
 }
 
 .origami-paper {
@@ -229,54 +253,92 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: 
-        linear-gradient(135deg, #ffffff, #f0f0f0),
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 8px,
-            rgba(0, 0, 0, 0.1) 8px,
-            rgba(0, 0, 0, 0.1) 9px
-        ),
-        repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 8px,
-            rgba(0, 0, 0, 0.1) 8px,
-            rgba(0, 0, 0, 0.1) 9px
-        );
-    border: 3px solid #000000;
+    background: #000000; /* black cube */
+    border: 2px solid rgba(0,255,255,0.15); /* subtle neon edge */
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    color: #000000;
-    font-weight: bold;
     backface-visibility: hidden;
-    box-shadow: 
-        0 4px 20px rgba(255, 255, 255, 0.2),
-        inset 0 0 20px rgba(255, 255, 255, 0.1),
-        0 0 0 1px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
+    box-shadow:
+        inset 0 0 0 1px rgba(0,255,255,0.06),
+        0 0 30px rgba(0,0,0,0.8);
+    position: absolute;
+    overflow: hidden;
 }
 
-.paper-face::before {
+/* faint neon cracks */
+.paper-face::after {
     content: '';
     position: absolute;
-    top: 10%;
-    left: 10%;
-    right: 10%;
-    bottom: 10%;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
-    border-radius: 4px;
+    inset: 0;
+    background:
+        linear-gradient(120deg, transparent 48%, rgba(0,255,255,0.35) 50%, transparent 52%),
+        linear-gradient(60deg, transparent 46%, rgba(180,0,255,0.28) 48%, transparent 50%),
+        radial-gradient(circle at 30% 40%, rgba(0,255,200,0.20), transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(170,0,255,0.18), transparent 45%);
+    mix-blend-mode: screen;
+    filter: blur(0.4px);
+    opacity: 0.35;
+    transition: opacity 250ms ease;
 }
 
-.front { transform: rotateY(0deg) translateZ(100px); }
-.back { transform: rotateY(180deg) translateZ(100px); }
-.left { transform: rotateY(-90deg) translateZ(100px); }
-.right { transform: rotateY(90deg) translateZ(100px); }
-.top { transform: rotateX(90deg) translateZ(100px); }
-.bottom { transform: rotateX(-90deg) translateZ(100px); }
+/* glow when shaking */
+.origami-paper.glow .paper-face::after {
+    opacity: 0.85;
+    filter: blur(0.6px) saturate(1.15);
+}
+
+/* Increase cube size transforms to 180px half-size (matches 360 container) */
+.front { transform: rotateY(0deg) translateZ(180px); }
+.back { transform: rotateY(180deg) translateZ(180px); }
+.left { transform: rotateY(-90deg) translateZ(180px); }
+.right { transform: rotateY(90deg) translateZ(180px); }
+.top { transform: rotateX(90deg) translateZ(180px); }
+.bottom { transform: rotateX(-90deg) translateZ(180px); }
+
+/* unfold animation into space */
+.origami-paper.unfold {
+    animation: none;
+}
+
+.origami-paper.unfold .front { animation: unfoldFace 900ms ease forwards; }
+.origami-paper.unfold .back { animation: unfoldFace 900ms ease 60ms forwards; }
+.origami-paper.unfold .left { animation: unfoldFace 900ms ease 120ms forwards; }
+.origami-paper.unfold .right { animation: unfoldFace 900ms ease 180ms forwards; }
+.origami-paper.unfold .top { animation: unfoldFace 900ms ease 240ms forwards; }
+.origami-paper.unfold .bottom { animation: unfoldFace 900ms ease 300ms forwards; }
+
+@keyframes unfoldFace {
+    0% { transform: translateZ(180px); opacity: 1; }
+    60% { transform: translateZ(180px) scale(1.02); opacity: 1; }
+    100% { transform: translateZ(0) rotateX(0) rotateY(0) translateY(0) translateX(0); opacity: 0.0; }
+}
+
+/* shake animation */
+.origami-paper.shake {
+    animation: shakeCube 500ms ease both;
+}
+
+@keyframes shakeCube {
+    0%, 100% { transform: rotateY(0deg) rotateX(0deg) translateX(0) translateY(0); }
+    20% { transform: rotateY(2deg) rotateX(-2deg) translateX(-6px) translateY(4px); }
+    40% { transform: rotateY(-2deg) rotateX(2deg) translateX(6px) translateY(-4px); }
+    60% { transform: rotateY(1deg) rotateX(-1deg) translateX(-3px) translateY(2px); }
+    80% { transform: rotateY(-1deg) rotateX(1deg) translateX(3px) translateY(-2px); }
+}
+
+/* center alignment already provided by container; ensure full viewport centering */
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1;
+}
 
 /* Quote container */
 .quote-container {
@@ -494,8 +556,8 @@ body {
     }
     
     .origami-container {
-        width: 150px;
-        height: 150px;
+        width: 280px;
+        height: 280px;
     }
     
     .paper-face {
@@ -503,15 +565,15 @@ body {
     }
     
     .front, .back, .left, .right, .top, .bottom {
-        transform: translateZ(75px);
+        transform: none;
     }
     
-    .front { transform: rotateY(0deg) translateZ(75px); }
-    .back { transform: rotateY(180deg) translateZ(75px); }
-    .left { transform: rotateY(-90deg) translateZ(75px); }
-    .right { transform: rotateY(90deg) translateZ(75px); }
-    .top { transform: rotateX(90deg) translateZ(75px); }
-    .bottom { transform: rotateX(-90deg) translateZ(75px); }
+    .front { transform: rotateY(0deg) translateZ(140px); }
+    .back { transform: rotateY(180deg) translateZ(140px); }
+    .left { transform: rotateY(-90deg) translateZ(140px); }
+    .right { transform: rotateY(90deg) translateZ(140px); }
+    .top { transform: rotateX(90deg) translateZ(140px); }
+    .bottom { transform: rotateX(-90deg) translateZ(140px); }
     
     .fold-btn {
         padding: 15px 30px;
@@ -525,8 +587,8 @@ body {
 
 @media (max-width: 480px) {
     .origami-container {
-        width: 120px;
-        height: 120px;
+        width: 220px;
+        height: 220px;
     }
     
     .paper-face {
@@ -537,12 +599,12 @@ body {
         transform: translateZ(60px);
     }
     
-    .front { transform: rotateY(0deg) translateZ(60px); }
-    .back { transform: rotateY(180deg) translateZ(60px); }
-    .left { transform: rotateY(-90deg) translateZ(60px); }
-    .right { transform: rotateY(90deg) translateZ(60px); }
-    .top { transform: rotateX(90deg) translateZ(60px); }
-    .bottom { transform: rotateX(-90deg) translateZ(60px); }
+    .front { transform: rotateY(0deg) translateZ(110px); }
+    .back { transform: rotateY(180deg) translateZ(110px); }
+    .left { transform: rotateY(-90deg) translateZ(110px); }
+    .right { transform: rotateY(90deg) translateZ(110px); }
+    .top { transform: rotateX(90deg) translateZ(110px); }
+    .bottom { transform: rotateX(-90deg) translateZ(110px); }
     
     .header {
         margin-bottom: 60px;
